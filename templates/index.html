@@ -1,0 +1,121 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Game Zone</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #151522;
+            color: white;
+            text-align: center;
+            margin: 0;
+        }
+
+        header {
+            background: #24243b;
+            padding: 25px;
+        }
+
+        h1 {
+            color: #65d6ff;
+        }
+
+        input {
+            padding: 12px;
+            width: 75%;
+            max-width: 400px;
+            border-radius: 8px;
+            border: none;
+            font-size: 16px;
+        }
+
+        #games {
+            display: grid;
+            grid-template-columns:
+                repeat(auto-fit, minmax(160px, 1fr));
+            gap: 15px;
+            padding: 25px;
+        }
+
+        .game {
+            background: #292941;
+            padding: 22px 10px;
+            border-radius: 12px;
+            color: white;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .game:hover {
+            background: #41416b;
+            transform: translateY(-3px);
+        }
+
+        #count {
+            color: #bdbddd;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>🎮 My Game Zone</h1>
+    <p>Find your next game!</p>
+
+    <input
+        type="text"
+        id="search"
+        placeholder="Search games..."
+    >
+
+    <p id="count">Loading games...</p>
+</header>
+
+<div id="games"></div>
+
+<script src="{{ url_for('static', filename='games.js') }}"></script>
+
+<script>
+    const gamesArea = document.getElementById("games");
+    const search = document.getElementById("search");
+    const count = document.getElementById("count");
+
+    function showGames() {
+        gamesArea.innerHTML = "";
+
+        const searchText = search.value.toLowerCase();
+
+        const filteredGames = games.filter(game =>
+            game.name.toLowerCase().includes(searchText)
+        );
+
+        count.textContent =
+            filteredGames.length + " games found";
+
+        filteredGames.forEach(game => {
+            const link = document.createElement("a");
+
+            link.className = "game";
+            link.textContent = "🎮 " + game.name;
+            link.href = game.url;
+            link.target = "_blank";
+            link.rel = "noopener noreferrer";
+
+            gamesArea.appendChild(link);
+        });
+    }
+
+    search.addEventListener("input", showGames);
+
+    showGames();
+</script>
+
+</body>
+</html>
